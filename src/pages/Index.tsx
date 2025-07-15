@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +13,6 @@ const Index = () => {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    // TODO: Implement search functionality
     console.log("Searching for:", query);
   };
 
@@ -21,9 +21,27 @@ const Index = () => {
     console.log("Opening tool:", toolId);
   };
 
+  // Filter categories and tools based on search query
+  const filteredCategories = searchQuery.trim() === "" 
+    ? toolCategories
+    : toolCategories.map(category => {
+        const filteredTools = category.tools.filter(tool => 
+          tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          category.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        
+        return {
+          ...category,
+          tools: filteredTools
+        };
+      }).filter(category => category.tools.length > 0);
+
   const totalTools = toolCategories.reduce((total, category) => total + category.tools.length, 0);
   const popularTools = toolCategories.flatMap(cat => cat.tools.filter(tool => tool.isPopular));
   const newTools = toolCategories.flatMap(cat => cat.tools.filter(tool => tool.isNew));
+
+  const filteredToolsCount = filteredCategories.reduce((total, category) => total + category.tools.length, 0);
 
   return (
     <div className="min-h-screen bg-background">
@@ -96,18 +114,42 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Tool Categories */}
+      {/* Search Results or Tool Categories */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {toolCategories.map((category, index) => (
-          <CategorySection
-            key={category.id}
-            title={category.title}
-            description={category.description}
-            iconName={category.iconName}
-            tools={category.tools}
-            onToolClick={handleToolClick}
-          />
-        ))}
+        {searchQuery.trim() !== "" && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-foreground mb-4">
+              Search Results for "{searchQuery}"
+            </h2>
+            <p className="text-muted-foreground">
+              Found {filteredToolsCount} tool{filteredToolsCount !== 1 ? 's' : ''} matching your search
+            </p>
+          </div>
+        )}
+
+        {filteredCategories.length === 0 && searchQuery.trim() !== "" ? (
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-2xl font-bold text-foreground mb-2">No tools found</h3>
+            <p className="text-muted-foreground mb-6">
+              Try searching with different keywords or browse our categories below.
+            </p>
+            <Button onClick={() => setSearchQuery("")} variant="outline">
+              Clear Search
+            </Button>
+          </div>
+        ) : (
+          filteredCategories.map((category, index) => (
+            <CategorySection
+              key={category.id}
+              title={category.title}
+              description={category.description}
+              iconName={category.iconName}
+              tools={category.tools}
+              onToolClick={handleToolClick}
+            />
+          ))
+        )}
       </main>
 
       {/* Footer */}
