@@ -112,7 +112,7 @@ export const toolCategories: Category[] = [
         id: "duplicate-remover",
         title: "Duplicate Line Remover",
         description: "Remove duplicate lines from text lists",
-        iconName: "CheckCircle"
+        iconName: "CheckCircle2"
       }
     ]
   },
@@ -166,7 +166,7 @@ export const toolCategories: Category[] = [
         id: "json-formatter",
         title: "JSON Formatter",
         description: "Format and validate JSON data with syntax highlighting",
-        iconName: "FileCheck",
+        iconName: "FileCheck2",
         isPopular: true
       },
       {
@@ -273,7 +273,7 @@ export const toolCategories: Category[] = [
         id: "todo-list",
         title: "Simple Todo List",
         description: "Create and manage your daily tasks",
-        iconName: "CheckCircle"
+        iconName: "CheckCircle2"
       },
       {
         id: "clipboard-manager",
