@@ -103,7 +103,7 @@ const Index = () => {
             key={category.id}
             title={category.title}
             description={category.description}
-            icon={<category.icon className="h-6 w-6" />}
+            iconName={category.iconName}
             tools={category.tools}
             onToolClick={handleToolClick}
           />

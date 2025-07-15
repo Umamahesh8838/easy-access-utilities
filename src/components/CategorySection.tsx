@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
 import ToolCard from "./ToolCard";
+import getIconComponent from "@/utils/getIcon";
 
 interface Tool {
   id: string;
   title: string;
   description: string;
-  icon: ReactNode;
+  iconName: string;
   isNew?: boolean;
   isPopular?: boolean;
 }
@@ -13,7 +14,7 @@ interface Tool {
 interface CategorySectionProps {
   title: string;
   description: string;
-  icon: ReactNode;
+  iconName: string;
   tools: Tool[];
   onToolClick: (toolId: string) => void;
 }
@@ -21,15 +22,17 @@ interface CategorySectionProps {
 const CategorySection = ({ 
   title, 
   description, 
-  icon, 
+  iconName, 
   tools, 
   onToolClick 
 }: CategorySectionProps) => {
+  const IconComponent = getIconComponent(iconName);
+  
   return (
     <section className="py-12">
       <div className="flex items-center space-x-4 mb-8">
         <div className="p-3 rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-          {icon}
+          <IconComponent className="h-6 w-6" />
         </div>
         <div>
           <h2 className="text-3xl font-bold text-foreground">{title}</h2>
@@ -43,7 +46,7 @@ const CategorySection = ({
             key={tool.id}
             title={tool.title}
             description={tool.description}
-            icon={tool.icon}
+            iconName={tool.iconName}
             category={title}
             isNew={tool.isNew}
             isPopular={tool.isPopular}

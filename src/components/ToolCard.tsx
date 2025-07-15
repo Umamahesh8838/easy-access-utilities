@@ -3,11 +3,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
+import getIconComponent from "@/utils/getIcon";
 
 interface ToolCardProps {
   title: string;
   description: string;
-  icon: ReactNode;
+  iconName: string;
   category: string;
   isNew?: boolean;
   isPopular?: boolean;
@@ -17,12 +18,14 @@ interface ToolCardProps {
 const ToolCard = ({ 
   title, 
   description, 
-  icon, 
+  iconName, 
   category, 
   isNew = false, 
   isPopular = false, 
   onClick 
 }: ToolCardProps) => {
+  const IconComponent = getIconComponent(iconName);
+
   return (
     <Card className="group relative overflow-hidden hover:shadow-card transition-all duration-300 hover:-translate-y-1 bg-card border-border">
       <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-5 transition-opacity duration-300"></div>
@@ -31,7 +34,7 @@ const ToolCard = ({
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
             <div className="p-2 rounded-lg bg-accent text-accent-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-              {icon}
+              <IconComponent className="h-5 w-5" />
             </div>
             <div>
               <CardTitle className="text-lg group-hover:text-primary transition-colors duration-300">
