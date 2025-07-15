@@ -1,10 +1,8 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import SearchBar from "@/components/SearchBar";
 import CategorySection from "@/components/CategorySection";
-import BauhausDemo from "@/components/BauhausDemo";
 import { toolCategories } from "@/data/tools";
 import { Zap, Star, Users, TrendingUp } from "lucide-react";
 import heroImage from "@/assets/hero-bg.jpg";
@@ -97,9 +95,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-      {/* Bauhaus Demo Cards */}
-      <BauhausDemo />
 
       {/* Tool Categories */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
