@@ -550,6 +550,7 @@ export const toolCategories: Category[] = [
       }
     ]
   },
+  /* TODO: Work on this later - Hidden from home page
   {
     id: "social-media-tools",
     title: "Social Media Tools",
@@ -612,6 +613,7 @@ export const toolCategories: Category[] = [
       }
     ]
   },
+  */
   {
     id: "calculators",
     title: "Calculators",
@@ -691,6 +693,7 @@ export const toolCategories: Category[] = [
       }
     ]
   },
+  /* TODO: Work on this later - Hidden from home page
   {
     id: "font-tools",
     title: "Font & Typography",
@@ -705,4 +708,5 @@ export const toolCategories: Category[] = [
       }
     ]
   }
+  */
 ];

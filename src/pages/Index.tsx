@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,9 +6,11 @@ import CategorySection from "@/components/CategorySection";
 import { toolCategories } from "@/data/tools";
 import { Zap, Star, Users, TrendingUp } from "lucide-react";
 import heroImage from "@/assets/hero-bg.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -17,8 +18,113 @@ const Index = () => {
   };
 
   const handleToolClick = (toolId: string) => {
-    // TODO: Navigate to tool page or open tool modal
-    console.log("Opening tool:", toolId);
+    console.log(`Tool clicked: ${toolId}`);
+    
+    // Universal route mapping for all tools
+    const toolRouteMap: Record<string, string> = {
+      "pomodoro-timer": "/tools/pomodoro-timer",
+      "qr-generator": "/tools/qr-generator",
+      "barcode-generator": "/tools/barcode-generator",
+      // Image tools
+      "png-to-jpg": "/tools/png-to-jpg",
+      "image-compressor": "/tools/image-compressor",
+      "image-cropper": "/tools/image-cropper",
+      "image-rotator": "/tools/image-rotator",
+      "image-filters": "/tools/image-filters",
+      "instagram-filters": "/tools/instagram-filters",
+      "image-resizer": "/tools/image-resizer",
+      "instagram-post-generator": "/tools/instagram-post-generator",
+      "instagram-post-editor": "/tools/instagram-post-editor",
+      "instagram-photo-downloader": "/tools/instagram-photo-downloader",
+      "image-average-color": "/tools/image-average-color",
+      "image-color-extractor": "/tools/image-color-extractor",
+      "image-color-picker": "/tools/image-color-picker",
+      "photo-censor": "/tools/photo-censor",
+      "svg-to-png": "/tools/svg-to-png",
+      "svg-stroke-to-fill": "/tools/svg-stroke-to-fill",
+      "image-to-base64": "/tools/image-to-base64",
+      "image-caption-generator": "/tools/image-caption-generator",
+      "scanned-pdf-converter": "/tools/scanned-pdf-converter",
+      // SVG tools
+      "svg-blob-generator": "/tools/svg-blob-generator",
+      "svg-pattern-generator": "/tools/svg-pattern-generator",
+      "svg-optimizer": "/tools/svg-optimizer",
+      // Favicon tool
+      "favicon-generator": "/tools/favicon-generator",
+      // PDF tools
+      "merge-pdf": "/tools/pdf-merge",
+      "split-pdf": "/tools/pdf-split",
+      "pdf-to-jpg": "/tools/pdf-to-jpg",
+      "compress-pdf": "/tools/compress-pdf",
+      // Text tools
+      "character-counter": "/tools/character-counter",
+      "case-converter": "/tools/case-converter",
+      "text-formatter": "/tools/text-formatter",
+      "duplicate-remover": "/tools/duplicate-remover",
+      "lorem-ipsum-generator": "/tools/lorem-ipsum-generator",
+      "letter-counter": "/tools/letter-counter",
+      "text-to-handwriting": "/tools/text-to-handwriting",
+      "bionic-reading": "/tools/bionic-reading",
+      "whitespace-remover": "/tools/whitespace-remover",
+      "list-randomizer": "/tools/list-randomizer",
+      // Coding tools
+      "base64-encoder": "/tools/base64-encoder",
+      "url-encoder": "/tools/url-encoder",
+      "html-encoder": "/tools/html-encoder",
+      "json-formatter": "/tools/json-formatter",
+      "json-tree-viewer": "/tools/json-tree-viewer",
+      "regex-tester": "/tools/regex-tester",
+      "code-to-image": "/tools/code-to-image",
+      // Calculators
+      "bmi-calculator": "/tools/bmi-calculator",
+      "loan-emi-calculator": "/tools/loan-emi-calculator",
+      "percentage-calculator": "/tools/percentage-calculator",
+      "age-calculator": "/tools/age-calculator",
+      "url-slug-generator": "/tools/url-slug-generator",
+      "react-native-shadow": "/tools/react-native-shadow",
+      "html-minifier": "/tools/html-minifier",
+      "js-minifier": "/tools/js-minifier",
+      "html-formatter": "/tools/html-formatter",
+      "js-formatter": "/tools/js-formatter",
+      "jwt-encoder": "/tools/jwt-encoder",
+      // Encryption tools
+      "md5-hash-generator": "/tools/md5-hash-generator",
+      "strong-password-generator": "/tools/strong-password-generator",
+      "md5-encrypt-decrypt": "/tools/md5-encrypt-decrypt",
+      // SHA tools (special handling below)
+      // Color tools
+      "color-picker": "/tools/color-picker",
+      "contrast-checker": "/tools/contrast-checker",
+      "ai-color-palette": "/tools/ai-color-palette-generator",
+      "hex-to-rgba": "/tools/hex-to-rgba-converter",
+      "rgba-to-hex": "/tools/rgba-to-hex-converter",
+      "color-shades": "/tools/color-shades-generator",
+      "color-mixer": "/tools/color-mixer",
+      // Productivity tools
+      "todo-list": "/tools/todo-list",
+      "clipboard-manager": "/tools/clipboard-manager",
+    };
+
+    // SHA tools: use one route with variant param
+    if (toolId.startsWith("sha") && toolId.endsWith("-encrypt-decrypt")) {
+      const variant = toolId.replace("-encrypt-decrypt", "").toUpperCase();
+      navigate(`/tools/sha-encrypt-decrypt?variant=${variant}`);
+      return;
+    }
+
+    // Fix: handle case-insensitive toolId and dashes/underscores
+    const normalizedToolId = toolId.toLowerCase().replace(/[_\s]+/g, "-");
+    
+    // Try both normalized and original toolId for maximum compatibility
+    if (toolRouteMap[normalizedToolId]) {
+      navigate(toolRouteMap[normalizedToolId]);
+    } else if (toolRouteMap[toolId]) {
+      navigate(toolRouteMap[toolId]);
+    } else {
+      // Before giving up, try a generic /tools/tool-id route
+      const genericPath = `/tools/${normalizedToolId}`;
+      navigate(genericPath);
+    }
   };
 
   // Filter categories and tools based on search query
@@ -115,7 +221,7 @@ const Index = () => {
       </section>
 
       {/* Search Results or Tool Categories */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main id="tools" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {searchQuery.trim() !== "" && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-foreground mb-4">

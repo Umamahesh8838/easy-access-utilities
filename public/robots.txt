@@ -1,8 +1,10 @@
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Twitterbot
 Allow: /
@@ -12,3 +14,15 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /service-worker.js
+Disallow: /manifest.json
+Crawl-delay: 1
+
+# High-value pages for crawling
+Allow: /tools/
+Allow: /qr
+
+# Sitemap location
+Sitemap: https://easy-access-utilities.vercel.app/sitemap.xml

@@ -1,0 +1,16 @@
+{
+  "name": "Easy Access Utilities",
+  "short_name": "Utilities",
+  "description": "A collection of free online tools and utilities",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/favicon.ico?v=2",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

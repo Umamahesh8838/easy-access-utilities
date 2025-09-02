@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Search, Sparkles } from "lucide-react";
+import { useState, useCallback, useMemo, useRef } from "react";
+import { Search, Sparkles, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -10,16 +10,41 @@ interface SearchBarProps {
 
 const SearchBar = ({ onSearch, placeholder = "Search for any tool..." }: SearchBarProps) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const debounceRef = useRef<NodeJS.Timeout>();
 
-  const handleSearch = () => {
+  // Debounced search to optimize performance
+  const debouncedSearch = useCallback((query: string) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+    debounceRef.current = setTimeout(() => {
+      onSearch(query);
+    }, 300);
+  }, [onSearch]);
+
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    debouncedSearch(value);
+  }, [debouncedSearch]);
+
+  const handleSearch = useCallback(() => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
     onSearch(searchQuery);
-  };
+  }, [searchQuery, onSearch]);
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       handleSearch();
     }
-  };
+  }, [handleSearch]);
+
+  const handleClear = useCallback(() => {
+    setSearchQuery("");
+    onSearch("");
+  }, [onSearch]);
 
   return (
     <div className="relative w-full max-w-2xl mx-auto">
@@ -33,10 +58,22 @@ const SearchBar = ({ onSearch, placeholder = "Search for any tool..." }: SearchB
             type="text"
             placeholder={placeholder}
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={handleInputChange}
             onKeyPress={handleKeyPress}
             className="flex-1 border-0 bg-transparent px-4 py-6 text-lg placeholder:text-muted-foreground focus-visible:ring-0"
+            autoComplete="off"
           />
+          {searchQuery && (
+            <Button
+              onClick={handleClear}
+              variant="ghost"
+              size="sm"
+              className="mr-2 h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
+              aria-label="Clear search"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
           <Button
             onClick={handleSearch}
             size="lg"
